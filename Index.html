@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HerAura | Your Voice. Your Future. Your Aura.</title>
+<style>
+:root{--lav:#eee7ff;--pink:#ffdce9;--gold:#f3d48a;--purple:#7552aa;--ink:#30263d;--muted:#746a80;--line:#eadff0;--ok:#2f8f63}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,system-ui,sans-serif;color:var(--ink);background:linear-gradient(135deg,#fff,#fbf7ff,#fff5f8)}
+header{position:sticky;top:0;z-index:5;background:#fffffff2;border-bottom:1px solid var(--line)}
+.nav{max-width:1200px;margin:auto;padding:14px 20px;display:flex;align-items:center;gap:15px}
+.logo{font-size:25px;font-weight:800;color:var(--purple)}
+nav{margin-left:auto;display:flex;flex-wrap:wrap;gap:4px}
+button{font:inherit}
+.nav button,.btn{border:0;border-radius:12px;padding:10px 13px;cursor:pointer;font-weight:700;background:transparent;color:var(--ink)}
+.nav button:hover,.btn:hover{background:var(--lav)}
+.nav button.on{background:var(--lav);color:var(--purple)}
+.primary{background:var(--purple)!important;color:#fff!important}
+.primary:hover{background:#63459a!important}
+.ghost{border:1px solid var(--line)!important;background:#fff!important}
+:focus-visible{outline:3px solid #b79ae0;outline-offset:2px}
+main{max-width:1200px;margin:auto;padding:28px 20px 70px}
+.page{display:none}.page.active{display:block}
+.hero{text-align:center;padding:60px 10px 38px}
+.hero h1{font-size:clamp(40px,7vw,68px);margin:12px 0 8px;letter-spacing:-2px}
+.hero p{font-size:20px;color:var(--muted);max-width:760px;margin:0 auto 25px;line-height:1.55}
+.pill,.chip{display:inline-block;padding:7px 11px;border-radius:99px;background:var(--lav);font-size:12px;font-weight:800}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:17px}
+.card{background:#fffffff2;border:1px solid var(--line);border-radius:22px;padding:21px;box-shadow:0 12px 35px #4b2f6418}
+.card h3{margin:8px 0}.card p{color:var(--muted);line-height:1.55}
+.icon{font-size:30px}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin:25px 0 15px;gap:12px;flex-wrap:wrap}
+.section-head h2{margin:0;font-size:30px}
+.toolbar{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:18px}
+input,select,textarea{width:100%;padding:13px;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--ink);font:inherit}
+.career-card,.opp-card{display:flex;flex-direction:column;min-height:215px}
+.spacer{flex:1}.small{font-size:13px;color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.chat{max-width:850px;margin:auto}
+.chatbox{height:420px;overflow:auto;padding:15px;background:#fbf9ff;border:1px solid var(--line);border-radius:20px}
+.msg{max-width:78%;padding:12px 15px;border-radius:17px;margin:9px 0;line-height:1.45}
+.bot{background:var(--lav)}.me{background:var(--pink);margin-left:auto}
+.chat-input{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.chip{border:1px solid var(--line);cursor:pointer;background:#fff}
+.chip.active{background:var(--pink)}
+.form{display:grid;gap:12px;max-width:650px}
+.progress{height:10px;background:#efe9f5;border-radius:20px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:#8b68b8;border-radius:20px;transition:width .35s ease}
+footer{background:#fff;border-top:1px solid var(--line);padding:28px 20px}
+.foot{max-width:1200px;margin:auto;color:var(--muted);line-height:1.8}
+.modal{position:fixed;inset:0;background:#23192d73;display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:24px;padding:25px;max-width:620px;width:100%;max-height:88vh;overflow:auto}
+.modal-box h2{margin:6px 0 4px}
+.modal-head{display:flex;justify-content:space-between;align-items:start;gap:10px}
+.close-x{border:0;background:var(--lav);border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800;flex:none}
+.block{margin-top:18px}
+.block h4{margin:0 0 6px;font-size:15px;color:var(--purple)}
+.block ul{margin:6px 0;padding-left:20px;color:var(--muted);line-height:1.6}
+.block ol{margin:6px 0;padding-left:20px;color:var(--muted);line-height:1.6}
+.skill-line{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;margin-top:8px;background:#fff;cursor:pointer;text-align:left;width:100%;font-weight:700}
+.skill-line:hover{background:var(--lav)}
+.state{font-size:11px;font-weight:800;padding:5px 9px;border-radius:99px;background:#f3eefa;color:var(--muted);flex:none}
+.state.started{background:#fff3d6;color:#8a6a12}
+.state.practicing{background:var(--pink);color:#a33a68}
+.state.completed{background:#d9f2e4;color:var(--ok)}
+.track{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.track button{border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px 12px;cursor:pointer;font-weight:700}
+.track button.on{background:var(--purple);color:#fff;border-color:var(--purple)}
+.community-composer{margin-top:16px}.community-feed{display:grid;gap:16px;margin-top:18px}.community-post{overflow:hidden}.post-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.post-user{display:flex;align-items:center;gap:10px}.post-avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--lav);font-weight:800;color:var(--purple)}.post-meta{font-size:12px;color:var(--muted)}.post-image{width:100%;max-height:460px;object-fit:cover;border-radius:16px;margin-top:14px;display:block}.post-caption{font-size:15px;line-height:1.55;margin:14px 0}.post-actions{display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:12px}.post-actions button{border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px 12px;cursor:pointer;font-weight:700}.post-actions button.liked{background:var(--pink);color:#a33a68;border-color:var(--pink)}.comment-list{margin-top:12px}.comment{padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}.comment b{color:var(--purple)}.comment-form{display:flex;gap:8px;margin-top:10px}.comment-form input{flex:1;min-width:0}.empty-community{text-align:center;padding:28px}.post-delete{border:0;background:none;color:#a33a68;cursor:pointer;font-weight:700}.community-note{font-size:12px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-weight:700;opacity:0;pointer-events:none;transition:.3s;z-index:20}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.saved-list{list-style:none;padding:0;margin:8px 0}
+.saved-list li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);color:var(--muted)}
+.link-btn{background:none;border:0;color:var(--purple);font-weight:700;cursor:pointer;padding:4px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:760px){nav{display:none}.toolbar{grid-template-columns:1fr}.hero{padding-top:35px}.msg{max-width:90%}}
+
+/* ---------------- hackathon upgrade ---------------- */
+.hero-badge{display:inline-flex;gap:7px;align-items:center;padding:8px 12px;border-radius:99px;background:var(--pink);font-weight:800;font-size:12px;color:#8b3e64}
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 28px}.stat-box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;text-align:center}.stat-box b{display:block;font-size:24px;color:var(--purple)}.stat-box span{font-size:12px;color:var(--muted)}
+.journey-line{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:start;margin:16px 0}.journey-step{text-align:center;font-size:12px;color:var(--muted);font-weight:700}.journey-step .bubble{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--lav);margin:0 auto 7px}.journey-step.done .bubble{background:var(--purple);color:#fff}.journey-step.current .bubble{background:var(--pink);color:#8b3e64}
+.quiz-card{background:linear-gradient(135deg,#fff,#fff7fb);border:1px solid var(--line);border-radius:22px;padding:22px;margin-top:24px}.quiz-question{font-size:20px;font-weight:800;margin:8px 0 14px}.quiz-options{display:grid;gap:9px}.quiz-options button{text-align:left;border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px;cursor:pointer}.quiz-options button:hover{background:var(--lav)}.quiz-progress{height:8px;background:#eee8f3;border-radius:99px;overflow:hidden}.quiz-progress i{display:block;height:100%;background:var(--purple);width:0}.result-list{display:grid;gap:10px}.result-item{padding:14px;border:1px solid var(--line);border-radius:15px;background:#fff}.tag{display:inline-block;font-size:11px;font-weight:800;padding:5px 8px;border-radius:99px;background:var(--lav);margin:3px}
+.achievement-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.badge-card{border:1px solid var(--line);border-radius:18px;padding:15px;background:#fff}.badge-card.locked{opacity:.55}.badge-icon{font-size:28px}.match-note{padding:10px 12px;border-radius:13px;background:#faf6ff;color:var(--purple);font-size:13px}
+@media(max-width:760px){.stat-strip{grid-template-columns:repeat(2,1fr)}.journey-line{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="logo">HerAura 🌸</div><nav id="nav"></nav></div></header>
+<main>
+
+<section id="home" class="page active">
+<div class="hero"><span class="pill">ChangeMakers • Gender Equality</span>
+<h1>Your Voice. Your Future. Your Aura. 🌸</h1>
+<p>HerAura brings career discovery, AI guidance, skills, opportunities, community and personal growth into one connected journey.</p>
+<div class="actions"><button class="btn primary" onclick="startQuiz()">✨ Discover My Career</button><button class="btn ghost" onclick="go('ai')">🤖 Talk to HerAura AI</button><button class="btn ghost" onclick="go('future')">🚀 Build My Future</button></div></div>
+<div class="stat-strip"><div class="stat-box"><b>1000+</b><span>career possibilities</span></div><div class="stat-box"><b>5</b><span>AI guidance modes</span></div><div class="stat-box"><b>7</b><span>journey stages</span></div><div class="stat-box"><b>1</b><span>connected ecosystem</span></div></div>
+<div class="grid">
+<div class="card"><div class="icon">🎯</div><h3>Discover</h3><p>Take a quick career quiz or explore detailed roadmaps across fields.</p></div>
+<div class="card"><div class="icon">🤖</div><h3>HerAura AI</h3><p>Listen, explore careers, build habits, compare choices and practise interviews.</p></div>
+<div class="card"><div class="icon">🛠️</div><h3>Build skills</h3><p>Turn a career choice into practical skills and a project you can show.</p></div>
+<div class="card"><div class="icon">🚀</div><h3>Find opportunities</h3><p>Save scholarships, internships and competitions, then verify the official source.</p></div>
+<div class="card"><div class="icon">🤝</div><h3>Community</h3><p>Share achievements, ask questions, upload projects and support other members.</p></div>
+<div class="card"><div class="icon">🏆</div><h3>Grow &amp; earn badges</h3><p>Track progress in Future Me and unlock milestones as you move forward.</p></div>
+</div>
+<div class="quiz-card" id="homeQuiz"><span class="hero-badge">✨ New • Career Discovery</span><h2>Not sure what career fits you?</h2><p class="small">Answer a few questions about your interests, work style and strengths. HerAura will suggest fields to explore — not make the decision for you.</p><button class="btn primary" onclick="startQuiz()">Start Career Discovery</button></div>
+<div class="section-head"><h2>HerAura Journey</h2><span class="small">Discover → Decide → Learn → Build → Apply → Share → Grow</span></div>
+<div class="card"><div class="journey-line"><div class="journey-step"><div class="bubble">🔎</div>Discover</div><div class="journey-step"><div class="bubble">🧭</div>Decide</div><div class="journey-step"><div class="bubble">📚</div>Learn</div><div class="journey-step"><div class="bubble">🛠️</div>Build</div><div class="journey-step"><div class="bubble">💼</div>Apply</div><div class="journey-step"><div class="bubble">🤝</div>Share</div><div class="journey-step"><div class="bubble">🏆</div>Grow</div></div><p class="small">HerAura is designed to help a user move from uncertainty to action, with each feature connected to the next step.</p></div>
+</section>
+
+<section id="quiz" class="page"><div class="section-head"><h2>Career Discovery ✨</h2><span class="small">Explore possibilities based on your answers</span></div><div id="quizBox"></div></section>
+
+<section id="careers" class="page"><div class="section-head"><h2>Explore career possibilities</h2></div>
+<p class="small">This prototype uses representative careers and is structured to scale to 1,000+ records.</p>
+<div class="toolbar"><input id="careerSearch" placeholder="Search career, skill or keyword..." oninput="renderCareers()"><select id="careerCat" onchange="renderCareers()"></select></div>
+<div id="careerGrid" class="grid"></div></section>
+
+<section id="opportunities" class="page"><div class="section-head"><h2>Career opportunities</h2></div>
+<p class="small">Some cards link to an official portal. Always confirm the current deadline and eligibility on the official site before applying.</p>
+<div class="toolbar"><input id="oppSearch" placeholder="Search opportunities..." oninput="renderOpps()"><select id="oppType" onchange="renderOpps()"><option>All types</option><option>Scholarships</option><option>Internships</option><option>Competitions</option><option>Hackathons</option><option>Courses &amp; Certifications</option><option>Mentorships</option></select></div>
+<div id="oppGrid" class="grid"></div></section>
+
+<section id="ai" class="page"><div class="chat"><div class="section-head"><h2>HerAura AI 🌸</h2></div>
+<p id="modeIntro" class="small"></p>
+<div class="chips" id="modes"></div>
+<div class="chatbox" id="chatbox"></div>
+<div class="chat-input"><input id="chatInput" placeholder="Type what's on your mind..." onkeydown="if(event.key==='Enter')sendChat()"><button class="btn primary" onclick="sendChat()">Send</button></div>
+<div class="row" style="margin-top:10px"><button class="btn ghost" onclick="clearThread()">Clear this conversation</button></div>
+<p class="small">Each mode keeps its own separate conversation. Prototype privacy note: demo chats stay in this browser. A real deployment needs secure authentication, secure storage, a clear privacy policy and safety moderation.</p></div></section>
+
+
+<section id="community" class="page"><div class="section-head"><h2>Community 🤝</h2><p class="small">Share ideas, achievements and questions. Like Instagram-style posts, others can like and comment.</p></div>
+<div class="card community-composer">
+<h3>➕ Create a post</h3>
+<div class="form">
+<select id="postTag"><option>#CareerJourney</option><option>#Achievement</option><option>#StudyTips</option><option>#Opportunities</option><option>#Projects</option><option>#Motivation</option></select>
+<input id="postCaption" maxlength="500" placeholder="Write something to share with the HerAura community...">
+<input id="postImage" type="file" accept="image/*">
+<button class="btn primary" onclick="createPost()">Post to Community</button>
+</div>
+<p class="small">You can add a photo and caption. In this prototype, posts are saved in this browser.</p>
+</div>
+<div id="communityFeed" class="community-feed"></div>
+<div class="card" style="margin-top:18px"><h3>🛡️ Community safety</h3><p>No harassment, bullying, inappropriate content or requests for personal contact details. A production deployment should add reporting, blocking, moderation and secure cloud storage.</p></div>
+</section>
+
+<section id="future" class="page"><div class="section-head"><h2>Future Me journey 🧭</h2></div>
+<div class="card"><h3>Where do you see yourself?</h3><p>Choose an interest and a work style, then add careers, skills and opportunities from the other pages.</p><div class="form">
+<select id="futureInterest"><option value="">Choose an interest</option><option>Technology &amp; AI</option><option>Business &amp; Finance</option><option>Creative &amp; Media</option><option>Government &amp; Public Service</option><option>Healthcare &amp; Psychology</option><option>Law &amp; Social Impact</option></select>
+<select id="futureWork"><option value="">Preferred work style</option><option>Creative</option><option>Analytical</option><option>People-focused</option><option>Leadership</option><option>Flexible / independent</option></select>
+<button class="btn primary" onclick="buildJourney()">Build my journey</button></div></div>
+<div id="journeyResult"></div></section>
+
+<section id="profile" class="page"><div class="section-head"><h2>Profile 👤</h2></div>
+<div id="profileCard"></div></section>
+
+</main>
+<footer><div class="foot"><b>Connect with HerAura</b><br>Team: ChangeMakers<br>
+khandekarmadhusree@gmail.com • sarithayadav112006@gmail.com • bantusaipriya@gmail.com • ppuliyashaswinigoud@gmail.com<br><br>HerAura — hackathon prototype for gender equality.</div></footer>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="modal-box" id="modalBox" role="dialog" aria-modal="true"></div></div>
+<div class="modal" id="loginModal" onclick="if(event.target===this)closeLogin()"><div class="modal-box" style="max-width:460px"><h2>Join HerAura 🌸</h2><div class="form"><input id="loginName" placeholder="Name"><input id="loginEmail" type="email" placeholder="Email"><input id="loginPass" type="password" placeholder="Password"><button class="btn primary" onclick="login()">Continue</button><button class="btn ghost" onclick="closeLogin()">Close</button></div><p class="small">Demo sign-in only. Details stay in this browser.</p></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- data ---------------- */
+const pages=['home','quiz','careers','opportunities','ai','community','future','profile'];
+
+/* name, category, path, key skills, what it is, project idea */
+const careers=[
+['AI Business Analyst','Technology & AI','Business + AI','Business analysis, AI literacy, Excel','You sit between the business team and the technology team: you study how work happens today, spot where AI or data can help, and write clear requirements for the people who build it.','Take one messy college process (event registration, attendance) and write an AI-assisted redesign with a cost and time estimate.'],
+['Data Analyst','Technology & IT','Analytics','Excel, SQL, data visualization','You turn raw data into answers — cleaning it, querying it and building charts that help a team decide something.','Clean a public dataset and build a one-page dashboard answering three questions.'],
+['Web Developer','Technology & IT','Technology','HTML, CSS, JavaScript','You build the websites and web apps people use, from layout and interaction to connecting them to data.','Build a responsive site for a local shop or a college club, with a working contact form.'],
+['UX/UI Designer','Arts & Design','Design','Figma, research, design thinking','You research what users struggle with, then design screens and flows that make a product easier to use.','Redesign a government or college website page and show the before and after with reasons.'],
+['Software Developer','Technology & IT','Technology','Programming, problem solving','You write, test and maintain the programs behind apps and systems.','Build a small app that solves a problem you personally have, and put the code on GitHub.'],
+['Cybersecurity Analyst','Technology & IT','Technology','Networking, security awareness','You protect systems and data — monitoring for attacks, closing weak points and teaching safe practice.','Run a security checklist on a demo site you built and write up the fixes.'],
+['Cloud Associate','Technology & IT','Technology','Cloud basics, networking','You help run applications on cloud platforms: storage, servers, access and cost.','Deploy a static site on a free cloud tier and document the setup steps.'],
+['Financial Analyst','Commerce & Finance','Finance','Excel, accounting, analysis','You study numbers — revenue, costs, investments — and advise on what the organisation should do with its money.','Build a 12-month budget model for a small business in Excel with three scenarios.'],
+['Accountant','Commerce & Finance','Commerce','Accounting, Excel, GST basics','You keep financial records accurate, prepare statements and make sure filings and taxes are correct.','Maintain three months of books for a mock small shop, ending in a profit and loss statement.'],
+['Investment Analyst','Banking','Finance','Financial markets, analysis','You research companies and markets and recommend where money should be invested.','Write a two-page research note on one listed company with your recommendation and reasoning.'],
+['Banking Associate','Banking','Banking','Communication, banking basics','You work with customers on accounts, loans and services, and handle daily banking operations.','Prepare a plain-language guide explaining three bank products to a first-time customer.'],
+['Marketing Specialist','Business & Management','Business','Marketing, communication, analytics','You plan how a product reaches people — the message, the channel and the measurement.','Run a two-week content campaign for a small local business and report what worked.'],
+['HR Specialist','Business & Management','People','Communication, organization','You handle hiring, onboarding, policies and the day-to-day wellbeing of employees.','Design a hiring process for one role, including the job post and interview questions.'],
+['Entrepreneur','Entrepreneurship','Business','Problem solving, business planning','You find a problem worth solving, build a solution and run the business around it.','Validate one business idea by interviewing 10 potential customers, then write a one-page plan.'],
+['Civil Services Officer','Government & Civil Services','Public Service','General studies, communication','You serve in government administration, implementing policy and public services at district or state level.','Write a policy brief on one local civic problem with a proposed solution and budget.'],
+['Lawyer','Law','Law','Research, communication, reasoning','You advise clients on the law, draft documents and argue cases.','Summarise a landmark judgment in plain language and explain why it still matters.'],
+['Teacher','Education','Education','Subject knowledge, communication','You teach a subject, design lessons and support students through their learning.','Design and teach one 40-minute lesson, then collect feedback and revise it.'],
+['Psychology Professional','Psychology & Social Sciences','Social Science','Psychology fundamentals, empathy','You study behaviour and support mental wellbeing through counselling, research or applied psychology.','Run a small survey on student stress and present findings responsibly and anonymously.'],
+['Content Creator','Media & Communication','Creative','Writing, video, storytelling','You make content that informs or entertains an audience and grows a following around a topic.','Publish 10 pieces on one topic over a month and track which format performed best.'],
+['Journalist','Media & Communication','Media','Research, writing, communication','You find, verify and report stories that the public should know about.','Report one 800-word local story with at least two interviewed sources.'],
+['Graphic Designer','Arts & Design','Creative','Design tools, visual communication','You communicate ideas visually — logos, layouts, posters, brand systems.','Build a small brand kit for a made-up cafe: logo, colours, type and three posters.'],
+['Animator','Performing Arts','Creative','Animation, storytelling','You bring characters and ideas to life through motion, for film, ads, education or games.','Make a 30-second animated explainer on a topic you care about.'],
+['Research Assistant','Science & Research','Research','Research methods, analysis','You support studies — reviewing literature, collecting data and helping analyse results.','Write a short literature review on one narrow question with 10 cited sources.'],
+['Environmental Analyst','Agriculture & Environment','Environment','Data, sustainability','You measure environmental impact and advise on how to reduce it.','Audit your campus waste or water use for a week and propose two changes with numbers.'],
+['Travel & Tourism Professional','Aviation & Travel','Travel','Communication, planning','You plan trips, run operations and look after travellers across the tourism industry.','Design a costed 5-day itinerary for a specific traveller type and budget.'],
+['Fashion Designer','Fashion & Beauty','Creative','Design, textiles, branding','You design clothing and accessories, from concept and fabric to the finished piece.','Produce a 6-look mini collection as sketches with fabric notes and costing.'],
+['Fitness Professional','Sports & Fitness','Fitness','Training knowledge, communication','You coach people through safe, structured physical training toward their goals.','Build a beginner 4-week programme and write the safety guidance that goes with it.'],
+['Architect','Engineering & Architecture','Design','Design, technical drawing','You design buildings and spaces that are safe, usable and worth being in.','Draw a small home layout for a real plot size with light, airflow and circulation notes.'],
+['Product Manager','Business & Management','Leadership','Strategy, communication, analytics','You decide what a product should do next, based on user needs, data and what the team can build.','Write a product spec for one new feature in an app you use, including how you would measure success.'],
+['Project Coordinator','Business & Management','Management','Planning, teamwork, Excel','You keep projects moving — schedules, tasks, updates and the people involved.','Plan a college event end to end with a timeline, owner list and risk sheet.'],
+['Tax Consultant','Commerce & Finance','Taxation','Tax basics, accounting','You advise people and businesses on tax rules, filings and planning.','Prepare a mock tax computation for a salaried person and a small business, and compare them.'],
+['GST Executive','Commerce & Finance','Taxation','GST, accounting, Excel','You handle GST registration, invoices, returns and reconciliation for a business.','Build a GST return workbook in Excel using sample invoices, with reconciliation checks.'],
+['Business Analyst','Business & Management','Analytics','Excel, SQL basics, problem solving','You study how a business works and recommend changes backed by data and clear requirements.','Map one company process end to end and propose three measurable improvements.'],
+['Prompt Engineer','Technology & AI','AI','Generative AI, prompt design','You design and test the instructions that make AI systems produce reliable, useful output.','Build a prompt library for one real task and document what improved the results.'],
+['AI Content Specialist','Technology & AI','AI','Generative AI, writing','You use AI tools to research, draft and scale content while keeping accuracy and voice under human control.','Produce a 5-piece content series using AI drafts, and document your editing and fact-checking process.'],
+['Digital Marketing Analyst','Business & Management','Marketing','SEO, analytics, content','You measure marketing performance and decide where the effort and budget should go.','Audit a small website for SEO and traffic, then write a prioritised fix list.'],
+['Social Impact Professional','Law & Social Impact','Social Impact','Research, communication','You work on social problems through NGOs, foundations or policy organisations.','Study one local issue and write a project proposal with objectives, activities and indicators.'],
+['Public Relations Specialist','Media & Communication','Communication','Writing, communication','You manage how an organisation is understood by the public and the press.','Write a press release and a short crisis response plan for a fictional organisation.'],
+['Freelance Consultant','Freelancing','Independent','Communication, expertise, portfolio','You sell your expertise directly to clients, project by project, and run your own practice.','Build a portfolio page with three sample deliverables and a written pricing structure.']
+];
+
+const eduByCat={
+'Technology & AI':['Any degree with strong logic or maths — B.Tech, BCA, B.Sc, or B.Com with analytics electives','Free foundation courses in data, statistics and AI basics','Optional postgraduate: MCA, M.Tech or an MBA in business analytics'],
+'Technology & IT':['B.Tech / BCA / B.Sc in computer science or IT','Self-taught route is accepted if your portfolio is strong','Optional postgraduate: MCA or M.Tech'],
+'Commerce & Finance':['B.Com, BBA or BAF','Professional route: CA, CMA, CS or CFA','Optional postgraduate: M.Com or MBA in finance'],
+'Banking':['B.Com, BBA or economics degree','Bank exams (IBPS, SBI) for public sector roles','Optional postgraduate: MBA in finance or banking'],
+'Business & Management':['BBA, B.Com or any degree with internships','Optional postgraduate: MBA or PGDM','Short certifications in analytics or marketing'],
+'Arts & Design':['B.Des, BFA or a design diploma','Portfolio matters more than the degree','Entrance routes: NID, NIFT, UCEED'],
+'Media & Communication':['BA in journalism, mass communication or English','Campus publications and internships count heavily','Optional postgraduate: MA in mass communication'],
+'Law':['5-year integrated BA LLB or 3-year LLB after graduation','CLAT or state law entrance','Bar Council enrolment to practise'],
+'Law & Social Impact':['BA in social work, sociology, political science or law','Field internships with NGOs','Optional postgraduate: MSW or public policy'],
+'Education':['B.A / B.Sc in your subject plus B.Ed','TET / CTET for school teaching','Optional postgraduate: M.A, M.Ed or NET for college teaching'],
+'Psychology & Social Sciences':['BA or B.Sc in psychology','M.A or M.Sc in psychology is needed for most practice roles','Licensed clinical practice needs an M.Phil or equivalent supervised training'],
+'Government & Civil Services':['Any bachelor degree','UPSC or state public service commission exam','Coaching optional; a study plan and answer practice are not'],
+'Science & Research':['B.Sc in your field','M.Sc, then PhD for independent research','Lab internships during your degree'],
+'Agriculture & Environment':['B.Sc in environmental science, agriculture or geography','Optional postgraduate: M.Sc or a sustainability certification','Fieldwork and GIS skills help'],
+'Aviation & Travel':['Degree or diploma in travel, tourism or hospitality','IATA certification for ticketing and operations','A second language is a real advantage'],
+'Fashion & Beauty':['B.Des in fashion, NIFT or a design diploma','Portfolio and internships with designers','Optional: business or merchandising certification'],
+'Sports & Fitness':['B.Sc in sports science or physical education','Certification: ACE, NASM, ISSA or K11','First aid and CPR certification'],
+'Engineering & Architecture':['B.Arch (5 years) via NATA, or B.Tech in civil','Council of Architecture registration to practise','Optional postgraduate: M.Arch or urban planning'],
+'Performing Arts':['Degree or diploma in animation, film or fine arts','Showreel is the real qualification','Short specialised courses in your software'],
+'Entrepreneurship':['Any degree; business, commerce or design help','Incubator and startup cell programmes at colleges','Short courses in finance, sales and law basics'],
+'Freelancing':['Any degree; skills and proof of work decide the income','Platform profiles plus a personal portfolio site','Short courses in your specialism and in client handling']
+};
+
+const careerOfficialLinks={
+'Government & Civil Services':['UPSC Official Website','https://upsc.gov.in'],
+'Banking':['IBPS Official Website','https://www.ibps.in'],
+'Law':['Bar Council of India','https://www.barcouncilofindia.org'],
+'Commerce & Finance':['National Career Service','https://www.ncs.gov.in'],
+'Technology & AI':['National Career Service','https://www.ncs.gov.in'],
+'Technology & IT':['National Career Service','https://www.ncs.gov.in'],
+'Business & Management':['National Career Service','https://www.ncs.gov.in']
+};
+
+const certByCat={
+'Technology & AI':['Google Data Analytics (Coursera)','Microsoft Excel and Power BI certifications','IBM AI Foundations, and any reputable generative AI course'],
+'Technology & IT':['freeCodeCamp certifications','Google IT Support / Cloud fundamentals (AWS, Azure, GCP)','NPTEL courses in your specialism'],
+'Commerce & Finance':['Advanced Excel and financial modelling courses','Tally and GST certification','CFA Level 1 for investment roles'],
+'Banking':['IBPS / SBI exam preparation','NISM certifications for markets roles','Advanced Excel'],
+'Business & Management':['Google Digital Marketing & E-commerce','HubSpot and Meta Blueprint','Project management basics (CAPM or Google PM)'],
+'Arts & Design':['Figma and Adobe certified courses','Google UX Design certificate','Interaction Design Foundation courses'],
+'Media & Communication':['Google News Initiative training','Content and SEO writing courses','Video editing certification'],
+'Law':['Moot court and legal research workshops','Cyber law or IPR short courses','Legal drafting courses'],
+'Law & Social Impact':['Project management for NGOs','Monitoring and evaluation short course','Grant writing workshops'],
+'Education':['CTET / state TET','NPTEL teaching methodology courses','Educational technology certification'],
+'Psychology & Social Sciences':['Counselling skills short courses','Research methods and SPSS training','Certified psychological first aid'],
+'Government & Civil Services':['Standard prelims and mains preparation resources','NCERT foundations and current affairs habit','Answer writing and mock interview practice'],
+'Science & Research':['Research methodology and statistics courses','Python or R for data analysis','Scientific writing workshops'],
+'Agriculture & Environment':['GIS and remote sensing courses','Sustainability reporting (GRI) basics','Environmental impact assessment training'],
+'Aviation & Travel':['IATA foundation certification','Amadeus or Galileo training','Customer service and language certification'],
+'Fashion & Beauty':['Pattern making and CAD courses','Fashion merchandising certification','Portfolio and styling workshops'],
+'Sports & Fitness':['ACE, NASM, ISSA or K11 certification','Nutrition fundamentals course','First aid and CPR'],
+'Engineering & Architecture':['AutoCAD, Revit and SketchUp certification','Green building (IGBC / LEED) basics','Structural drawing workshops'],
+'Performing Arts':['Blender, Maya or After Effects certification','Storyboarding and animation principles courses','Showreel workshops'],
+'Entrepreneurship':['Business model and startup bootcamps','Financial literacy for founders','Sales and pitching workshops'],
+'Freelancing':['Platform-specific skill tests','Client communication and pricing courses','Portfolio building workshops']
+};
+
+/* title, type, field, note, official source (or null) */
+const opps=[
+['National Scholarship Portal','Scholarships','All fields','The Government of India portal where central and state scholarship schemes are listed and applications are submitted. Eligibility and deadlines vary by scheme and change every academic year.','https://scholarships.gov.in','Government of India'],
+['AICTE Internship Portal','Internships','Multiple fields','A government-backed portal listing internships from companies and institutions for students across disciplines. Filter by field, location and duration.','https://internship.aicte-india.org','AICTE, Government of India'],
+['Smart India Hackathon','Hackathons','Technology','A national hackathon where student teams solve problem statements submitted by ministries and industry. Teams usually register through their college.','https://sih.gov.in','Government of India'],
+['Business case competition (demo listing)','Competitions','Business','Placeholder card showing how a case competition would appear. In production this connects to the organiser page with the current theme, eligibility and submission deadline.',null,null],
+['AI skills course (demo listing)','Courses & Certifications','AI','Placeholder card for a course listing. In production this shows the provider, cost, duration and what the certificate is actually worth to employers.',null,null],
+['Mentorship programme (demo listing)','Mentorships','Career','Placeholder card for a mentorship listing. In production this shows the mentor profile, time commitment and who the programme is open to.',null,null]
+];
+
+const skillGroups=[
+['🤖','AI & Emerging Technology',['AI Fundamentals','Generative AI','Prompt Engineering','AI for Business','Data Analytics']],
+['💻','Digital Skills',['Excel','PowerPoint','Web Development','Databases','Cloud Computing']],
+['💼','Business & Finance',['Accounting','Financial Analysis','Financial Literacy','Marketing','GST']],
+['🎤','Professional Skills',['Communication','Public Speaking','Interview Skills','Leadership','Problem Solving']],
+['🎨','Creative Skills',['Graphic Design','UI/UX','Video Editing','Content Creation','Storytelling']],
+['🌱','Personal Growth',['Goal Setting','Confidence','Decision Making','Adaptability','Study Skills']]
+];
+
+/* learn, practise, project */
+const skillInfo={
+'AI Fundamentals':['What AI, machine learning and data actually are, and where each is used','Explain three real AI systems you already use and what data they need','Write a one-page note on one process at home or college that AI could improve, and one risk of doing so'],
+'Generative AI':['How text and image models work at a basic level, and where they fail','Use one tool daily for a week on real tasks, noting good and bad output','Build a small AI-assisted business idea: the task, the prompt, the human check'],
+'Prompt Engineering':['Clear instructions, context, examples, output format and iteration','Rewrite one weak prompt five times and compare the results','Create a prompt library of 10 prompts for one job, with before and after examples'],
+'AI for Business':['Where AI saves time or money, and how to judge cost against benefit','Pick one department and list three tasks AI could support','Write a mini business case: current process, AI-assisted process, time saved'],
+'Data Analytics':['Cleaning data, spotting patterns, basic statistics and honest charts','Analyse a public dataset and write three findings','Build a one-page dashboard that answers three questions for a specific reader'],
+'Excel':['Formulas, lookups, pivot tables, charts and data cleaning','Rebuild a messy sheet into a clean one with formulas, not manual edits','Build a personal or small-business budget tracker with a summary sheet'],
+'PowerPoint':['Slide structure, hierarchy, visuals and cutting text','Turn a 2-page document into a 5-slide deck','Present a 5-minute deck on your career plan and get feedback'],
+'Web Development':['HTML structure, CSS layout, JavaScript basics, responsive design','Rebuild a simple page you like from scratch','Build and publish a personal portfolio site'],
+'Databases':['Tables, relationships, and SELECT, WHERE, JOIN and GROUP BY','Query a practice database daily for a week','Design a small database for a club or shop and write five useful queries'],
+'Cloud Computing':['What cloud storage, servers and services are, and how billing works','Use a free tier to host a file and a simple site','Deploy a small project to the cloud and document the steps and costs'],
+'Accounting':['Debits and credits, journals, ledgers and financial statements','Record 20 sample transactions and prepare a trial balance','Maintain three months of mock books ending in a profit and loss statement'],
+'Financial Analysis':['Reading statements, ratios, forecasting and scenarios','Calculate five ratios for one listed company and interpret them','Build a 12-month financial model with best, base and worst cases'],
+'Financial Literacy':['Budgeting, saving, interest, credit, insurance and simple investing','Track every rupee you spend for one month and categorise it','Write your own 6-month money plan with a savings target and a review date'],
+'Marketing':['Audience, positioning, channels, content and measurement','Study three campaigns you liked and note why they worked','Run a two-week campaign for something real and report the results'],
+'GST':['Registration, invoices, input credit, returns and due dates','Prepare 10 compliant sample invoices','Build a GST workbook with returns summary and reconciliation checks'],
+'Communication':['Structuring a point, listening, tone and writing clearly','Summarise one long article in three sentences daily','Write and send five real messages you have been avoiding'],
+'Public Speaking':['Opening, structure, pace, pauses and handling nerves','Record a 2-minute talk weekly and watch it back','Speak for five minutes at a class, club or online meetup'],
+'Interview Skills':['Answer structure, examples, research and asking good questions','Prepare seven answers using situation, action, result','Do a full mock interview with someone and act on their feedback'],
+'Leadership':['Setting direction, delegating, feedback and handling conflict','Lead one small task and ask the team what you could improve','Lead a project end to end and write an honest review of what you learned'],
+'Problem Solving':['Defining the real problem, breaking it down, testing options','Solve one puzzle or case daily for two weeks','Take a real problem you face, test a solution, and document the result'],
+'Graphic Design':['Layout, colour, type, contrast and visual hierarchy','Redesign one bad poster you see this week','Build a brand kit: logo, colours, type and three posters'],
+'UI/UX':['User research, flows, wireframes, prototypes and usability testing','Sketch three screens for an app you use daily','Redesign a real flow and test it with five people'],
+'Video Editing':['Cuts, pacing, sound, captions and export settings','Edit a 60-second video weekly','Publish a 2-minute explainer on a topic you know well'],
+'Content Creation':['Choosing a topic, hooks, formats and consistency','Publish three pieces a week for two weeks','Run a one-month series on one topic and report what performed best'],
+'Storytelling':['Structure, character, tension and a clear point','Retell one real experience in 300 words','Write or record a story that explains your career journey so far'],
+'Goal Setting':['Specific goals, milestones, habits and honest review','Set one weekly goal and review it every Sunday','Write a 90-day plan with weekly checkpoints and follow it'],
+'Confidence':['Preparation, self-talk, body language and handling setbacks','Do one slightly uncomfortable thing each week and note what happened','Keep a 30-day record of things you did well and what they prove'],
+'Decision Making':['Options, criteria, trade-offs, risk and reversibility','List options and criteria for three small decisions','Work through one real decision in writing and record why you chose it'],
+'Adaptability':['Learning fast, changing plans and staying steady under change','Learn one new tool in a week without a full course','Take on one unfamiliar task and write what you did when stuck'],
+'Study Skills':['Active recall, spaced repetition, note-taking and focus blocks','Use recall instead of rereading for one subject for two weeks','Design a study system for your next exam and evaluate it afterwards']
+};
+
+const modes=[
+['Listen & Share','🎧','A supportive space to express what is on your mind.','Hi 🌸 This space is for listening. You can share what happened, what you feel, or what you are unsure about — at your own pace.'],
+['Career','🎯','Explore careers based on interests, subjects and skills.','🎯 Career mode. Tell me your favourite subjects, what you enjoy doing, and any career you are already curious about.'],
+['Growth','🌱','Turn a goal into small, trackable actions.','🌱 Growth mode. Name one thing you want to improve, and we will turn it into a practical goal.'],
+['Decision Helper','🧭','Compare options using clear criteria and trade-offs.','🧭 Decision mode. Tell me the options you are considering and what matters most to you.'],
+['Interview Coach','🎤','Practise interview questions and improve your answers.','🎤 Interview Coach. Choose a role or career, then answer one question at a time. I will suggest ways to make your answer clearer and more specific.']
+];
+
+/* ---------------- state ---------------- */
+const DEFAULT={user:null,skills:{},careers:[],opps:[],journey:null,posts:[]};
+let S=load();
+function load(){try{return Object.assign({},DEFAULT,JSON.parse(localStorage.getItem('herAura')||'{}'))}catch(e){return Object.assign({},DEFAULT)}}
+function save(){try{localStorage.setItem('herAura',JSON.stringify(S))}catch(e){}}
+const allSkills=skillGroups.flatMap(g=>g[2]);
+
+/* ---------------- helpers ---------------- */
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2600)}
+function go(id){pages.forEach(x=>document.getElementById(x).classList.remove('active'));document.getElementById(id).classList.add('active');
+document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===id));
+window.scrollTo({top:0,behavior:'smooth'});
+if(id==='quiz')renderQuiz();if(id==='careers')renderCareers();if(id==='opportunities')renderOpps();if(id==='profile')renderProfile();if(id==='future')renderJourney();if(id==='ai')renderChat()}
+function navInit(){document.getElementById('nav').innerHTML=pages.map(x=>`<button data-p="${x}" onclick="go('${x}')">${x==='ai'?'HerAura AI':x==='future'?'Future Me':x==='quiz'?'Career Quiz':x[0].toUpperCase()+x.slice(1)}</button>`).join('');document.querySelector('#nav button').classList.add('on')}
+
+/* ---------------- modal ---------------- */
+function openModal(html){document.getElementById('modalBox').innerHTML=html;document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+let pendingAction=null;
+function closeLogin(){pendingAction=null;document.getElementById('loginModal').classList.remove('show')}
+function showLogin(){document.getElementById('loginModal').classList.add('show')}
+function needAuth(action){if(S.user)return true;pendingAction=action;showLogin();toast('Please sign in to continue.');return false}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeLogin()}});
+
+/* ---------------- careers ---------------- */
+function renderCareers(){
+const q=(document.getElementById('careerSearch').value||'').toLowerCase();
+const cat=document.getElementById('careerCat').value;
+const html=careers.map((c,i)=>({c,i})).filter(({c})=>(cat==='All categories'||c[1]===cat)&&c.join(' ').toLowerCase().includes(q))
+.map(({c,i})=>`<div class="card career-card"><span class="pill">${esc(c[1])}</span><h3>${esc(c[0])}</h3><p><b>Path:</b> ${esc(c[2])}<br><b>Key skills:</b> ${esc(c[3])}</p><div class="spacer"></div><div class="row"><button class="btn primary" onclick="openRoadmap(${i})">View roadmap</button>${S.careers.includes(c[0])?'<span class="state completed">In Future Me</span>':''}</div></div>`).join('');
+document.getElementById('careerGrid').innerHTML=html||'<div class="card"><h3>No careers found</h3><p>Try a different keyword or category.</p></div>';
+}
+
+function roadmapSkills(c){
+const own=c[3].split(',').map(s=>s.trim());
+const extra=['Communication','Problem Solving','Goal Setting'];
+return own.concat(extra.filter(e=>!own.some(o=>o.toLowerCase()===e.toLowerCase())));
+}
+function matchSkills(c){
+const text=(c[3]+' '+c[2]+' '+c[1]).toLowerCase();
+return allSkills.filter(s=>text.includes(s.toLowerCase().split(' ')[0])).slice(0,4);
+}
+function openRoadmap(i){
+if(!needAuth(()=>openRoadmap(i)))return;
+const c=careers[i];
+const edu=eduByCat[c[1]]||['Any bachelor degree relevant to the field','Internships and practical work during your degree','Optional postgraduate study once you know your specialism'];
+const cert=certByCat[c[1]]||['Short online certifications in your core skill','A recognised industry certification once you specialise','Workshops and college training programmes'];
+const learn=roadmapSkills(c);
+const related=careers.filter(x=>x[1]===c[1]&&x[0]!==c[0]).slice(0,4).map(x=>x[0]);
+const linked=matchSkills(c);
+const saved=S.careers.includes(c[0]);
+openModal(`
+<div class="modal-head"><div><span class="pill">${esc(c[1])}</span><h2>${esc(c[0])}</h2></div><button class="close-x" onclick="closeModal()" aria-label="Close">✕</button></div>
+<p style="color:var(--muted);line-height:1.6">${esc(c[4])}</p>
+<div class="block"><h4>Education</h4><ul>${edu.map(e=>`<li>${esc(e)}</li>`).join('')}</ul></div>
+<div class="block"><h4>Skills to learn</h4><ul>${learn.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div>
+<div class="block"><h4>Beginner learning path</h4><ol>
+<li>Months 1–2: learn the basics of ${esc(learn[0])} and finish one free foundation course.</li>
+<li>Months 3–4: add ${esc(learn[1]||learn[0])} and practise on small real tasks every week.</li>
+<li>Months 5–6: build the project below and publish it where people can see it.</li>
+<li>Month 7 onward: apply for internships, competitions or freelance work in this field.</li>
+</ol></div>
+<div class="block"><h4>Project to practise</h4><p>${esc(c[5])}</p></div>
+<div class="block"><h4>Certifications and resources</h4><ul>${cert.map(e=>`<li>${esc(e)}</li>`).join('')}</ul></div>
+${linked.length?`<div class="block"><h4>Start these skills now</h4>${linked.map(s=>skillRow(s)).join('')}</div>`:''}
+<div class="block"><h4>Related careers</h4><p>${related.length?esc(related.join(' • ')):'Explore other categories from the careers page.'}</p></div>
+${careerOfficialLinks[c[1]]?`<div class="block"><h4>Official career resources</h4><p>For more details, eligibility, notifications and current information, visit the official website.</p><a class="btn primary" href="${careerOfficialLinks[c[1]][1]}" target="_blank" rel="noopener noreferrer">${careerOfficialLinks[c[1]][0]}</a></div>`:''}
+<div class="block"><h4>Where to look for opportunities</h4><p>Check the opportunities page for scholarships, internships and competitions, then verify each one on its official portal.</p></div>
+<div class="block row"><button class="btn primary" onclick="addCareer('${esc(c[0])}')">${saved?'Added to Future Me ✓':'Add to Future Me'}</button><button class="btn ghost" onclick="closeModal();go('opportunities')">Find opportunities</button></div>`);
+}
+function addCareer(name){
+if(!S.careers.includes(name)){S.careers.push(name);save();toast(name+' added to your Future Me journey.')}
+else toast(name+' is already in your journey.');
+closeModal();renderCareers();renderJourney();renderProfile();
+}
+
+/* ---------------- opportunities ---------------- */
+function renderOpps(){
+const q=(document.getElementById('oppSearch').value||'').toLowerCase();
+const t=document.getElementById('oppType').value;
+const html=opps.map((o,i)=>({o,i})).filter(({o})=>(t==='All types'||o[1]===t)&&o.join(' ').toLowerCase().includes(q))
+.map(({o,i})=>`<div class="card opp-card"><span class="pill">${esc(o[1])}</span><h3>${esc(o[0])}</h3><p><b>Field:</b> ${esc(o[2])}<br>${o[4]?'Official source available':'Demo listing'}</p>${S.journey&&o[2].toLowerCase().includes((S.journey.interest||'').split(' ')[0].toLowerCase())?'<div class="match-note">🎯 Matches your Future Me interest</div>':''}<div class="spacer"></div><div class="row"><button class="btn primary" onclick="openOpp(${i})">View details</button>${S.opps.includes(o[0])?'<span class="state completed">Saved</span>':''}</div></div>`).join('');
+document.getElementById('oppGrid').innerHTML=html||'<div class="card"><h3>Nothing matches that</h3><p>Try a different keyword or type.</p></div>';
+}
+function openOpp(i){
+if(!needAuth(()=>openOpp(i)))return;
+const o=opps[i],saved=S.opps.includes(o[0]);
+openModal(`
+<div class="modal-head"><div><span class="pill">${esc(o[1])}</span><h2>${esc(o[0])}</h2></div><button class="close-x" onclick="closeModal()" aria-label="Close">✕</button></div>
+<div class="block"><h4>Field</h4><p>${esc(o[2])}</p></div>
+<div class="block"><h4>About this opportunity</h4><p>${esc(o[3])}</p></div>
+<div class="block"><h4>Before you apply</h4><ul><li>Confirm the current deadline on the official page.</li><li>Check eligibility: year of study, course, income or category criteria.</li><li>Keep documents ready: ID, marksheets, certificates, bank details.</li><li>Never pay a fee to a third party claiming to guarantee selection.</li></ul></div>
+<div class="block"><h4>Official website / source</h4><p>${o[4]?esc(o[5])+' — official portal. Use this site for the current deadline, eligibility and application details.':'This is a demo listing. It is not connected to a live opportunity yet, so there is no official link to open.'}</p></div>
+<div class="block row">${o[4]?`<a class="btn primary" href="${o[4]}" target="_blank" rel="noopener noreferrer">Visit official website</a>`:''}<button class="btn ghost" onclick="addOpp('${esc(o[0])}')">${saved?'Saved to Future Me ✓':'Save to Future Me'}</button><button class="btn ghost" onclick="closeModal()">Close</button></div>`);
+}
+function addOpp(name){
+if(!S.opps.includes(name)){S.opps.push(name);save();toast(name+' saved to your journey.')}
+else toast('Already saved.');
+closeModal();renderOpps();renderJourney();renderProfile();
+}
+
+/* ---------------- skills ---------------- */
+function statusOf(s){return S.skills[s]||''}
+function skillRow(s){
+const st=statusOf(s);
+return `<button class="skill-line" onclick="openSkill('${esc(s)}')"><span>${esc(s)}</span><span class="state ${st}">${st?st[0].toUpperCase()+st.slice(1):'Not started'}</span></button>`;
+}
+function renderSkills(){
+document.getElementById('skillsGrid').innerHTML=skillGroups.map(g=>{
+const done=g[2].filter(s=>statusOf(s)==='completed').length;
+return `<div class="card"><div class="icon">${g[0]}</div><h3>${esc(g[1])}</h3><p class="small">${done} of ${g[2].length} completed</p>${g[2].map(skillRow).join('')}</div>`;
+}).join('');
+}
+function openSkill(s){
+const info=skillInfo[s]||['Core concepts of this skill','Practise weekly on a real task','Build one small project using it'];
+const group=skillGroups.find(g=>g[2].includes(s));
+const st=statusOf(s);
+const uses=careers.filter(c=>(c[3]+' '+c[2]).toLowerCase().includes(s.toLowerCase().split(' ')[0])).slice(0,4).map(c=>c[0]);
+openModal(`
+<div class="modal-head"><div><span class="pill">${esc(group?group[1]:'Skill')}</span><h2>${esc(s)}</h2></div><button class="close-x" onclick="closeModal()" aria-label="Close">✕</button></div>
+<div class="block"><h4>Learn</h4><p>${esc(info[0])}</p></div>
+<div class="block"><h4>Practise</h4><p>${esc(info[1])}</p></div>
+<div class="block"><h4>Project</h4><p>${esc(info[2])}</p></div>
+${uses.length?`<div class="block"><h4>Careers that use this</h4><p>${esc(uses.join(' • '))}</p></div>`:''}
+<div class="block"><h4>Track your progress</h4>
+<div class="track">
+<button class="${st==='started'?'on':''}" onclick="setSkill('${esc(s)}','started')">Started</button>
+<button class="${st==='practicing'?'on':''}" onclick="setSkill('${esc(s)}','practicing')">Practising</button>
+<button class="${st==='completed'?'on':''}" onclick="setSkill('${esc(s)}','completed')">Completed</button>
+${st?`<button onclick="setSkill('${esc(s)}','')">Clear</button>`:''}
+</div>
+<p class="small">Completed skills update your profile progress bar and your Future Me journey.</p></div>
+<div class="block row"><button class="btn primary" onclick="setSkill('${esc(s)}','started',true)">Add to Future Me journey</button><button class="btn ghost" onclick="closeModal()">Close</button></div>`);
+}
+function setSkill(s,state,keepOpen){
+if(state)S.skills[s]=state;else delete S.skills[s];
+save();
+toast(state?`${s}: ${state}`:`${s} reset.`);
+renderSkills();renderProfile();renderJourney();
+if(keepOpen)closeModal();else openSkill(s);
+}
+
+/* ---------------- HerAura AI ---------------- */
+let mode=modes[0][0];
+const threads={};
+modes.forEach(m=>threads[m[0]]=[{who:'bot',text:m[3]}]);
+function renderModes(){
+document.getElementById('modes').innerHTML=modes.map(m=>`<button class="chip ${m[0]===mode?'active':''}" onclick="setMode('${m[0]}')">${m[1]} ${m[0]}</button>`).join('');
+document.getElementById('modeIntro').textContent=modes.find(m=>m[0]===mode)[2];
+}
+function setMode(m){mode=m;renderModes();renderChat()}
+function renderChat(){
+renderModes();
+const b=document.getElementById('chatbox');
+b.innerHTML=threads[mode].map(m=>`<div class="msg ${m.who==='me'?'me':'bot'}">${m.who==='me'?esc(m.text):m.text}</div>`).join('');
+b.scrollTop=b.scrollHeight;
+}
+function clearThread(){threads[mode]=[{who:'bot',text:modes.find(m=>m[0]===mode)[3]}];renderChat();toast(mode+' conversation cleared.')}
+function sendChat(){
+const i=document.getElementById('chatInput'),t=i.value.trim();if(!t)return;
+threads[mode].push({who:'me',text:t});
+threads[mode].push({who:'bot',text:reply(t)});
+i.value='';renderChat();
+}
+function reply(t){
+const x=t.toLowerCase();
+if(/scared|afraid|hurt|threat|unsafe|harass|abuse|force/.test(x))
+return '🌸 I am sorry you are dealing with something frightening. You deserve respect and safety. If someone has hurt, threatened or pressured you, please tell a trusted adult, a teacher, or someone close to you who can act. In India you can call 181 (women\'s helpline) or 112 (emergency). You do not have to handle a serious situation alone.';
+const n=threads[mode].filter(m=>m.who==='me').length;
+if(mode==='Listen & Share'){
+const a=['🌸 Thank you for saying that. What has been the hardest part of it for you?','🌸 That sounds like a lot to carry. When did it start feeling this way?','🌸 I hear you. Is there anything that makes it a little easier, even briefly?','🌸 You are allowed to feel this. Is there someone in your life who knows what is going on?'];
+return a[Math.min(n-1,a.length-1)];
+}
+if(mode==='Career'){
+const a=['🎯 Good starting point. Which subjects or activities do you lose track of time doing?','🎯 Now tell me how you like to work: with people, with numbers, with ideas, or with your hands.','🎯 Based on that, open the careers page and try two or three roadmaps. Look at the education and skills sections and see which one you would actually enjoy doing for a year.','🎯 Pick one career and add it to Future Me, then start its first two skills. One month of real practice tells you more than more browsing.'];
+return a[Math.min(n-1,a.length-1)];
+}
+if(mode==='Growth'){
+const a=['🌱 Name the one thing you want to get better at, in a single sentence.','🌱 Now make it measurable: what would count as progress by the end of one month?','🌱 Choose the smallest action you can repeat weekly. What is it, and which day will you do it?','🌱 Set a check-in date. On that day, write down what happened rather than how you felt about it — that keeps it honest.'];
+return a[Math.min(n-1,a.length-1)];
+}
+if(mode==='Interview Coach'){
+const a=['🎤 Choose a role, for example Data Analyst, Accountant, Marketing Intern or Business Analyst.','🎤 Interview question: Tell me about yourself and one skill you are proud of. Answer in 3–5 sentences.','🎤 Good. Add one specific example: what did you do, what was your contribution, and what did you learn?','🎤 Final tip: keep your answer structured, honest and specific. Practise once more with a different question.'];
+return a[Math.min(n-1,a.length-1)];
+}
+const a=['🧭 List the options you are choosing between. Two or three is enough.','🧭 Now the criteria: what actually matters to you here — money, learning, time, family, location? Rank the top three.','🧭 Score each option against those three criteria. Which one wins, and does that answer surprise you?','🧭 Last question: which choice is easier to reverse if it goes badly? When options are close, the reversible one is usually the safer first step.'];
+return a[Math.min(n-1,a.length-1)];
+}
+
+/* ---------------- Career Discovery Quiz ---------------- */
+const quizQuestions=[
+{q:'Which kind of activity sounds most interesting?',a:[['Solving problems with numbers or data',['Finance','Analytics'] ],['Creating apps, tools or technology',['Technology','Analytics']],['Helping, teaching or working with people',['People','Leadership']],['Designing, writing or creating content',['Creative','Communication']],['Leading a project or building a business',['Leadership','Business']]]},
+{q:'How do you prefer to work?',a:[['With data, systems and details',['Analytics','Finance']],['With technology and experiments',['Technology','Innovation']],['With people and conversations',['People','Communication']],['With ideas, design and creativity',['Creative','Communication']],['With teams, decisions and responsibility',['Leadership','Business']]]},
+{q:'Which strength would you most like to use?',a:[['Logical thinking',['Analytics','Finance']],['Learning new technology quickly',['Technology','Innovation']],['Empathy and communication',['People','Communication']],['Creativity and storytelling',['Creative','Communication']],['Planning and leadership',['Leadership','Business']]]},
+{q:'What would you enjoy building or improving?',a:[['A dashboard that explains what is happening',['Analytics','Finance']],['An AI or digital product',['Technology','Innovation']],['A programme that helps people',['People','Social Impact']],['A campaign, design or media project',['Creative','Communication']],['A business idea or team project',['Business','Leadership']]]},
+{q:'Which result would make you feel most proud?',a:[['Finding a useful pattern in data',['Analytics']],['Building something people can use',['Technology']],['Helping someone make progress',['People','Social Impact']],['Creating something memorable',['Creative']],['Turning an idea into a real project',['Business','Leadership']]]},
+{q:'What do you want to explore first?',a:[['Finance & Accounting',['Finance']],['AI & Technology',['Technology','Innovation']],['People & Social Impact',['People','Social Impact']],['Creative & Media',['Creative','Communication']],['Business & Entrepreneurship',['Business','Leadership']]]}
+];
+let quizIndex=0,quizScores={};
+function startQuiz(){go('quiz');quizIndex=0;quizScores={};renderQuiz()}
+function answerQuiz(tags){tags.forEach(t=>quizScores[t]=(quizScores[t]||0)+1);quizIndex++;renderQuiz()}
+function renderQuiz(){
+const el=document.getElementById('quizBox');if(!el)return;
+if(quizIndex>=quizQuestions.length){showQuizResults();return}
+const q=quizQuestions[quizIndex];
+el.innerHTML=`<div class="quiz-card"><div class="quiz-progress"><i style="width:${Math.round(quizIndex/quizQuestions.length*100)}%"></i></div><p class="small">Question ${quizIndex+1} of ${quizQuestions.length}</p><div class="quiz-question">${esc(q.q)}</div><div class="quiz-options">${q.a.map(x=>`<button onclick='answerQuiz(${JSON.stringify(x[1])})'>${esc(x[0])}</button>`).join('')}</div></div>`;
+}
+function showQuizResults(){
+S.quizCompleted=true;save();renderProfile();
+const sorted=Object.entries(quizScores).sort((a,b)=>b[1]-a[1]);
+const labels={Technology:'Technology & AI',Analytics:'Data & Analytics',Finance:'Commerce & Finance',People:'People-focused careers',Leadership:'Business & Leadership',Creative:'Creative & Media',Communication:'Communication & Media',Innovation:'Innovation & Product',Business:'Business & Entrepreneurship','Social Impact':'Social Impact & Public Service'};
+const top=sorted.slice(0,4);
+document.getElementById('quizBox').innerHTML=`<div class="card"><span class="hero-badge">✨ Your exploration map</span><h2>Careers to explore</h2><p class="small">These are exploration suggestions based on your answers. They are not a fixed career decision.</p><div class="result-list">${top.map(([k,v])=>`<div class="result-item"><b>${esc(labels[k]||k)}</b><div class="small">Interest match: ${v} signals</div></div>`).join('')}</div><div class="row" style="margin-top:16px"><button class="btn primary" onclick="applyQuizResult('${esc(top[0]?.[0]||'Technology')}')">Build My Future</button><button class="btn ghost" onclick="go('careers')">Explore Careers</button><button class="btn ghost" onclick="startQuiz()">Retake Quiz</button></div></div>`;
+}
+function applyQuizResult(tag){
+const map={Technology:'Technology & AI',Analytics:'Technology & IT',Finance:'Business & Finance',People:'Healthcare & Psychology',Leadership:'Business & Finance',Creative:'Creative & Media',Communication:'Creative & Media',Innovation:'Technology & AI',Business:'Business & Finance','Social Impact':'Law & Social Impact'};
+const interest=map[tag]||'Technology & AI';document.getElementById('futureInterest').value=interest;document.getElementById('futureWork').value=tag==='Creative'?'Creative':tag==='People'?'People-focused':tag==='Leadership'||tag==='Business'?'Leadership':'Analytical';buildJourney();go('future');toast('Your exploration map is ready 🌸');
+}
+
+/* ---------------- Future Me ---------------- */
+function buildJourney(){
+const i=document.getElementById('futureInterest').value,w=document.getElementById('futureWork').value;
+if(!i||!w){toast('Choose an interest and a work style first.');return}
+S.journey={interest:i,work:w};save();renderJourney();
+document.getElementById('journeyResult').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function renderJourney(){
+const el=document.getElementById('journeyResult');if(!el)return;
+if(!S.journey&&!S.careers.length&&!S.opps.length&&!Object.keys(S.skills).length){el.innerHTML='';return}
+const done=Object.keys(S.skills).filter(s=>S.skills[s]==='completed');
+const active=Object.keys(S.skills).filter(s=>S.skills[s]&&S.skills[s]!=='completed');
+const suggest=S.careers.length?matchSkills(careers.find(c=>c[0]===S.careers[0])||careers[0]):[];
+const stages=[S.quizCompleted,S.careers.length>0,active.length>0||done.length>0,done.length>0,S.opps.length>0,Array.isArray(S.posts)&&S.posts.length>0,achievementData().filter(x=>x[3]).length>=3];
+const stageNames=['Discover','Decide','Learn','Build','Apply','Share','Grow'];
+const progress=stages.filter(Boolean).length;
+el.innerHTML=`<div class="card" style="margin-top:18px">
+<span class="pill">Your journey • ${progress}/7 stages</span>
+<h2>${S.journey?esc(S.journey.interest):'Your plan so far'}</h2>
+<div class="journey-line">${stageNames.map((n,i)=>`<div class="journey-step ${stages[i]?'done':i===progress?'current':''}"><div class="bubble">${['🔎','🧭','📚','🛠️','💼','🤝','🏆'][i]}</div>${n}</div>`).join('')}</div>
+${S.journey?`<p class="small">Work style: ${esc(S.journey.work)}</p>`:''}
+<div class="block"><h4>1. Careers</h4>${S.careers.length?`<ul class="saved-list">${S.careers.map(c=>`<li><span>${esc(c)}</span><button class="link-btn" onclick="removeCareer('${esc(c)}')">Remove</button></li>`).join('')}</ul>`:'<p>No career added yet. Open a roadmap on the careers page and add one.</p>'}</div>
+<div class="block"><h4>2. Skills in progress</h4>${active.length?`<p>${active.map(s=>esc(s)+' ('+S.skills[s]+')').join(' • ')}</p>`:'<p>Nothing in progress. Open a skill from a career roadmap and mark it started.</p>'}
+${suggest.length?`<p class="small">Suggested next for ${esc(S.careers[0])}: ${esc(suggest.join(', '))}</p>`:''}</div>
+<div class="block"><h4>3. Learning completed</h4><p>${done.length?esc(done.join(' • ')):'No skills completed yet.'}</p></div>
+<div class="block"><h4>4. Opportunities saved</h4>${S.opps.length?`<ul class="saved-list">${S.opps.map(o=>`<li><span>${esc(o)}</span><button class="link-btn" onclick="removeOpp('${esc(o)}')">Remove</button></li>`).join('')}</ul>`:'<p>Nothing saved. Open an opportunity and save it here.</p>'}</div>
+<div class="block"><h4>5. Your next step</h4><p>${nextStep(done,active)}</p></div>
+<p><b>Do not just choose a career. Build your journey.</b></p></div>`;
+}
+function nextStep(done,active){
+if(!S.careers.length)return'Add one career from a roadmap so the rest of your plan has a direction.';
+if(!active.length&&!done.length)return`Start the first skill for ${esc(S.careers[0])} from a career roadmap this week.`;
+if(active.length)return`Finish ${esc(active[0])} — mark it completed once you have built something with it.`;
+if(!S.opps.length)return'You have skills completed. Save one opportunity and check its official deadline.';
+return'Build the project from your career roadmap, then apply to a saved opportunity with it in your portfolio.';
+}
+function removeCareer(c){S.careers=S.careers.filter(x=>x!==c);save();renderJourney();renderCareers();renderProfile()}
+function removeOpp(o){S.opps=S.opps.filter(x=>x!==o);save();renderJourney();renderOpps();renderProfile()}
+
+/* ---------------- community ---------------- */
+function renderCommunity(){
+const el=document.getElementById('communityFeed');if(!el)return;
+const posts=Array.isArray(S.posts)?S.posts:[];
+if(!posts.length){el.innerHTML='<div class="card empty-community"><h3>🌸 Be the first to post</h3><p>Share a college moment, career idea, achievement, project or helpful thought with the community.</p></div>';return}
+el.innerHTML=posts.map((p,i)=>{
+const comments=Array.isArray(p.comments)?p.comments:[];
+return `<div class="card community-post">
+<div class="post-head"><div class="post-user"><div class="post-avatar">${esc((p.name||'H')[0].toUpperCase())}</div><div><b>${esc(p.name||'HerAura member')}</b><div class="post-meta">${esc(p.date||'Just now')}</div></div></div><div class="row">${p.mine?`<button class="post-delete" onclick="deletePost(${i})">Delete</button>`:`<button class="post-delete" onclick="reportPost(${i})">Report</button>`}</div></div>
+${p.image?`<img class="post-image" src="${p.image}" alt="Community post image">`:''}
+${p.caption?`<div class="post-caption">${p.tag?`<span class="tag">${esc(p.tag)}</span>`:''} ${esc(p.caption)}</div>`:''}
+<div class="post-actions"><button class="${p.liked?'liked':''}" onclick="toggleLike(${i})">♥ ${p.likes||0} Like${(p.likes||0)===1?'':'s'}</button><button onclick="focusComment(${i})">💬 ${comments.length} Comment${comments.length===1?'':'s'}</button></div>
+<div class="comment-list">${comments.map(c=>`<div class="comment"><b>${esc(c.name||'Member')}:</b> ${esc(c.text)}</div>`).join('')}</div>
+<div class="comment-form"><input id="comment-${i}" maxlength="300" placeholder="Write a comment..."><button class="btn ghost" onclick="addComment(${i})">Comment</button></div>
+</div>`}).join('');
+}
+function createPost(){
+if(!S.user){showLogin();toast('Please sign in before creating a community post.');return}
+const caption=document.getElementById('postCaption').value.trim();
+const file=document.getElementById('postImage').files[0];
+if(!caption&&!file){toast('Add a caption or photo first.');return}
+const add=(image)=>{
+S.posts=Array.isArray(S.posts)?S.posts:[];
+const tag=document.getElementById('postTag').value;S.posts.unshift({name:S.user.n,caption,image:image||'',tag,likes:0,liked:false,comments:[],date:new Date().toLocaleString(),mine:true});
+save();document.getElementById('postCaption').value='';document.getElementById('postImage').value='';renderCommunity();toast('Your post was shared 🌸');
+};
+if(file){
+if(file.size>3*1024*1024){toast('Please choose an image under 3 MB.');return}
+const reader=new FileReader();reader.onload=()=>add(reader.result);reader.readAsDataURL(file);
+}else add('');
+}
+function toggleLike(i){if(!S.user){showLogin();toast('Please sign in to like posts.');return}S.posts[i].liked=!S.posts[i].liked;S.posts[i].likes=Math.max(0,(S.posts[i].likes||0)+(S.posts[i].liked?1:-1));save();renderCommunity()}
+function addComment(i){
+if(!S.user){showLogin();toast('Please sign in to comment.');return}
+const input=document.getElementById('comment-'+i);const t=input.value.trim();if(!t)return;
+if(!Array.isArray(S.posts[i].comments))S.posts[i].comments=[];
+S.posts[i].comments.push({name:S.user.n,text:t});save();renderCommunity();toast('Comment added.');
+}
+function focusComment(i){const input=document.getElementById('comment-'+i);if(input){input.focus();input.scrollIntoView({behavior:'smooth',block:'center'})}}
+function deletePost(i){if(!S.posts[i].mine)return;if(confirm('Delete this post?')){S.posts.splice(i,1);save();renderCommunity();renderProfile();toast('Post deleted.')}}
+function reportPost(i){if(!S.user)return needAuth(()=>reportPost(i));toast('Thanks. This demo records your report locally for the session. A production version should send it to a moderation system.')}
+
+/* ---------------- profile ---------------- */
+function achievementData(){
+const posts=Array.isArray(S.posts)?S.posts:[];
+const done=Object.keys(S.skills).filter(s=>S.skills[s]==='completed');
+return [
+['🌱','First Step','Start your first skill',Object.keys(S.skills).length>=1],
+['🔎','Career Explorer','Save a career to Future Me',S.careers.length>=1],
+['💼','Opportunity Hunter','Save an opportunity',S.opps.length>=1],
+['🏆','Future Builder','Complete your first skill',done.length>=1],
+['💡','Idea Maker','Create a community post',posts.length>=1],
+['🔥','Skill Builder','Complete 3 skills',done.length>=3],
+['✨','Career Explorer+','Complete the career discovery quiz',!!S.quizCompleted],
+['🚀','Journey Starter','Complete career + skill + opportunity steps',S.careers.length>=1&&done.length>=1&&S.opps.length>=1]
+];
+}
+function renderProfile(){
+const el=document.getElementById('profileCard');if(!el)return;
+const done=Object.keys(S.skills).filter(s=>S.skills[s]==='completed');
+const active=Object.keys(S.skills).filter(s=>S.skills[s]&&S.skills[s]!=='completed');
+const pct=Math.round(done.length/allSkills.length*100);
+const badges=achievementData();
+el.innerHTML=`<div class="card"><span class="pill">Your dashboard</span><h2>${S.user?esc(S.user.n):'Guest'}</h2><p>${S.user?'Email: '+esc(S.user.e):'Sign in to save your journey across this browser.'}</p><div class="grid"><div class="stat-box"><b>${S.careers.length}</b><span>careers saved</span></div><div class="stat-box"><b>${S.opps.length}</b><span>opportunities saved</span></div><div class="stat-box"><b>${done.length}</b><span>skills completed</span></div><div class="stat-box"><b>${badges.filter(x=>x[3]).length}</b><span>badges earned</span></div></div><h3>Learning progress</h3><div class="progress"><i style="width:${pct}%"></i></div><p class="small">${done.length} of ${allSkills.length} skills completed (${pct}%).</p>${done.length?`<p class="small">Completed: ${esc(done.join(' • '))}</p>`:'<p class="small">Start a skill from a career roadmap to begin.</p>'}</div>
+<div class="section-head"><h2>Achievements 🏆</h2></div><div class="achievement-grid">${badges.map(b=>`<div class="badge-card ${b[3]?'':'locked'}"><div class="badge-icon">${b[0]}</div><b>${b[1]}</b><p class="small">${b[2]}</p>${b[3]?'<span class="state completed">Unlocked</span>':'<span class="state">Locked</span>'}</div>`).join('')}</div>
+<div class="row" style="margin-top:16px">${S.user?`<button class="btn ghost" onclick="logout()">Sign out</button>`:`<button class="btn primary" onclick="showLogin()">Login / sign up</button>`}<button class="btn ghost" onclick="go('future')">Open Future Me</button></div>`;
+}
+
+function login(){
+const n=document.getElementById('loginName').value.trim(),e=document.getElementById('loginEmail').value.trim();
+if(!n||!e){toast('Enter your name and email to continue.');return}
+S.user={n,e};save();const action=pendingAction;pendingAction=null;document.getElementById('loginModal').classList.remove('show');renderProfile();toast('Welcome to HerAura, '+n+' 🌸');if(action)setTimeout(action,50);
+}
+function logout(){S.user=null;save();renderProfile();toast('Signed out.')}
+
+/* ---------------- init ---------------- */
+const cats=[...new Set(careers.map(c=>c[1]))].sort();
+document.getElementById('careerCat').innerHTML='<option>All categories</option>'+cats.map(c=>`<option>${esc(c)}</option>`).join('');
+if(S.journey){document.getElementById('futureInterest').value=S.journey.interest;document.getElementById('futureWork').value=S.journey.work}
+navInit();renderCareers();renderOpps();renderProfile();renderJourney();renderChat();renderCommunity();
+</script>
+</body></html>
